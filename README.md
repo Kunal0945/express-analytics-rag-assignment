@@ -152,7 +152,7 @@ http://127.0.0.1:8000/docs
 
 ## Query API Response
 
-![Query Response](screenshots/query-response.png)
+![Query Response](screenshots/response.png)
 
 ---
 
