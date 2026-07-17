@@ -136,6 +136,17 @@ def retrieval_node(state: GraphState):
 
     documents = RETRIEVER.invoke(question)
 
+    for i, doc in enumerate(documents):
+        print(f"\n===== DOCUMENT {i+1} =====")
+    print(doc.page_content[:500])
+
+    print("\n========== RETRIEVAL ==========")
+    print("Question:", question)
+    print("Retrieved:", len(documents), "documents")
+
+    for doc in documents:
+        print(doc.metadata)
+
     return {
         "documents": documents
     }
@@ -149,6 +160,8 @@ def document_grading_node(state: GraphState):
 
     relevant_documents = []
 
+    print("\n========== GRADING ==========")
+
     for document in state["documents"]:
 
         result = GRADING_CHAIN.invoke(
@@ -158,8 +171,13 @@ def document_grading_node(state: GraphState):
             }
         )
 
-        if result.strip().upper() == "YES":
+        print(document.metadata)
+        print("LLM Output:", repr(result))
+
+        if "YES" in result.upper():
             relevant_documents.append(document)
+
+    print("Relevant Documents:", len(relevant_documents))
 
     return {
         "relevant_documents": relevant_documents
@@ -197,6 +215,9 @@ def generation_node(state: GraphState):
         for document in state["relevant_documents"]
     )
 
+    print("\n========== GENERATION ==========")
+    print("Context Length:", len(context))
+
     answer = GENERATION_CHAIN.invoke(
         {
             "question": question,
@@ -204,10 +225,15 @@ def generation_node(state: GraphState):
         }
     )
 
+    print("\n========== ANSWER ==========")
+    print(repr(answer))
+
+    print("\n========== CONTEXT ==========")
+    print(context)
+
     return {
         "answer": answer
     }
-
 
 # ==================================================
 # Conditional Router

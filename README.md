@@ -144,6 +144,17 @@ Swagger UI
 ```
 http://127.0.0.1:8000/docs
 ```
+# Screenshots
+
+## Swagger UI
+
+![Swagger UI](screenshots/swagger-ui.png)
+
+## Query API Response
+
+![Query Response](screenshots/query-response.png)
+
+---
 
 ---
 
